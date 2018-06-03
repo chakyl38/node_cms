@@ -11,10 +11,12 @@ app.set('view engine', 'handlebars');
 // LOAD ROUTES
 const home = require('./routes/home/index');
 const admin = require('./routes/admin/index');
+const posts = require('./routes/admin/posts');
 
 // USE ROUTES
 app.use('/', home);
 app.use('/admin', admin);
+app.use('/admin/posts', posts);
 
 
 

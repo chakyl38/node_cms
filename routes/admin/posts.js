@@ -7,9 +7,8 @@ router.all('/*', (req, res, next) =>{
 });
 
 router.get('/', (req, res)=>{
-    res.render('admin/index');
+    res.send('It Works');
 });
-
 
 
 module.exports = router;
