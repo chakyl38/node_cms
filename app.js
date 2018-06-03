@@ -1,8 +1,14 @@
-const express = require('express');
-const path = require('path');
-const exphbs = require('express-handlebars');
+const express  = require('express');
+const path     = require('path');
+const exphbs   = require('express-handlebars');
+const mongoose = require('mongoose');
 const app = express();
 
+
+// Database connection
+mongoose.connect('mongodb://localhost:27017/cms', {useMongoClient: true}).then((db)=>{
+    console.log('MONGO connected');
+}).catch(error => console.log(error));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.engine('handlebars', exphbs({defaultLayout: 'home'}));
