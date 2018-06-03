@@ -2,17 +2,24 @@ const express  = require('express');
 const path     = require('path');
 const exphbs   = require('express-handlebars');
 const mongoose = require('mongoose');
+const bodyParser     = require('body-parser');
 const app = express();
+
+mongoose.Promise = global.Promise;
 
 
 // Database connection
-mongoose.connect('mongodb://localhost:27017/cms', {useMongoClient: true}).then((db)=>{
+mongoose.connect('mongodb://localhost:27017/cms').then((db)=>{
     console.log('MONGO connected');
 }).catch(error => console.log(error));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.engine('handlebars', exphbs({defaultLayout: 'home'}));
 app.set('view engine', 'handlebars');
+
+// BODY PARSER
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 // LOAD ROUTES
 const home = require('./routes/home/index');
