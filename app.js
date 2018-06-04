@@ -1,8 +1,9 @@
-const express  = require('express');
-const path     = require('path');
-const exphbs   = require('express-handlebars');
-const mongoose = require('mongoose');
+const express        = require('express');
+const path           = require('path');
+const exphbs         = require('express-handlebars');
+const mongoose       = require('mongoose');
 const bodyParser     = require('body-parser');
+const methodOverride = require('method-override');
 const app = express();
 
 mongoose.Promise = global.Promise;
@@ -13,9 +14,14 @@ mongoose.connect('mongodb://localhost:27017/cms').then((db)=>{
     console.log('MONGO connected');
 }).catch(error => console.log(error));
 
+const {select} = require('./helpers/handlebars-helpers');
+
 app.use(express.static(path.join(__dirname, 'public')));
-app.engine('handlebars', exphbs({defaultLayout: 'home'}));
+app.engine('handlebars', exphbs({defaultLayout: 'home', helpers: {select: select}}));
 app.set('view engine', 'handlebars');
+
+//  METHOD OVERRIDE
+app.use(methodOverride('_method'));
 
 // BODY PARSER
 app.use(bodyParser.urlencoded({extended: true}));

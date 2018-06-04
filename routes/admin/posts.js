@@ -40,5 +40,29 @@ router.post('/create', (req, res)=>{
     });
 });
 
+// EDITING POSTS //
+router.get('/edit/:id', (req, res)=>{
+    Post.findOne({_id: req.params.id}).then(posts=>{
+        res.render('admin/posts/edit', {posts: posts})
+    });
+});
+
+router.put('/edit/:id', (req, res) =>{
+    Post.findOne({_id: req.params.id}).then(posts=>{
+        if(req.body.allowComments){
+            allowComments = true;
+        }else{
+            allowComments = false;
+        }
+        posts.title = req.body.title;
+        posts.status = req.body.status;
+        posts.allowComments = allowComments;
+        posts.body = req.body.body;
+        posts.save().then(updatedPost=>{
+            res.redirect('/admin/posts');
+        });
+    });
+});
+
 
 module.exports = router;
